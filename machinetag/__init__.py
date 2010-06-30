@@ -149,6 +149,43 @@ class machinetag :
         if self.is_machinetag() :
             return "%s:%s=%s" % (self.namespace(), self.predicate(), self.value())
 
+    #
+
+    def lazy_8s(self):
+
+        ns = self.namespace()
+        pred = self.predicate()
+        value = self.value()
+
+        parts = [
+            '%s:' % ns,
+            '%s:%s=' % (ns, pred),
+            '%s:%s=%s' % (ns, pred, value),
+            '=%s' % value,
+            ':%s=' % pred,
+            '%s=%s' % (pred, value)
+            ]
+
+        return map(self.encode_lazy_8s, parts)
+
+    def encode_lazy_8s(self, str):
+
+        str = str.replace('8', '88')
+        str = str.replace(':', '8c')
+        str = str.replace('=', '8e')
+        str = str.replace('_', '8u')
+
+        return str
+
+    def decode_lazy_8s(self, str):
+
+        str = str.replace('8u', '_')
+        str = str.replace('8e', '=')
+        str = str.replace('8c', ':')
+        str = str.replace('88', '8')
+
+        return str
+
 if __name__ == "__main__" :
 
     str_mt = "flickr:user=straup"
@@ -178,3 +215,6 @@ if __name__ == "__main__" :
         print "MT4 : %s" % mt4
         print "MT4 : is numeric %s" % mt4.is_numeric()
         print "MT4 : type %s" % type(mt4.value())
+
+    for p in mt1.lazy_8s():
+        print "lazy 8s encoded: %s decoded: %s" % (p, mt1.decode_lazy_8s(p))
