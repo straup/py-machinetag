@@ -151,7 +151,7 @@ class machinetag :
 
     #
 
-    def lazy_8s(self):
+    def magic_8s(self):
 
         ns = self.namespace()
         pred = self.predicate()
@@ -166,9 +166,9 @@ class machinetag :
             '%s=%s' % (pred, value)
             ]
 
-        return map(self.encode_lazy_8s, parts)
+        return map(self.encode_magic_8s, parts)
 
-    def encode_lazy_8s(self, str):
+    def encode_magic_8s(self, str):
 
         str = str.replace('8', '88')
         str = str.replace(':', '8c')
@@ -177,7 +177,7 @@ class machinetag :
 
         return str
 
-    def decode_lazy_8s(self, str):
+    def decode_magic_8s(self, str):
 
         str = str.replace('8u', '_')
         str = str.replace('8e', '=')
@@ -216,5 +216,5 @@ if __name__ == "__main__" :
         print "MT4 : is numeric %s" % mt4.is_numeric()
         print "MT4 : type %s" % type(mt4.value())
 
-    for p in mt1.lazy_8s():
-        print "lazy 8s encoded: %s decoded: %s" % (p, mt1.decode_lazy_8s(p))
+    for p in mt1.magic_8s():
+        print "lazy 8s encoded: %s decoded: %s" % (p, mt1.decode_magic_8s(p))
